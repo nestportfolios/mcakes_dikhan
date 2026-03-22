@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html data-theme="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MCakes — Artisan Celebration Cakes</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Cinzel+Decorative:wght@400;700&amp;family=Josefin+Sans:wght@200;300;400&amp;display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/></head>
+<body>
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<!-- Animated background canvas -->
+<canvas id="bgCanvas"></canvas>
+<!-- NAV -->
+<nav>
+<div class="nav-logo"><span style="font-family: 'Cinzel Decorative', serif; font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg, var(--sun1), var(--sun3), var(--sun2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MCakes</span></div>
+<ul class="nav-links" id="navLinks"><li><a href="#cakes">Catalogue</a></li><li><a href="#specialty">Our Craft</a></li><li><a href="#videos">Videos</a></li><li><a href="#order">Order &amp; Contact</a></li><li><a href="#" onclick="openTeam();return false;">Our Team</a></li></ul>
+<div class="nav-right">
+<span style="font-size: 0.65rem; color: var(--text-muted); margin-right: 15px; letter-spacing: 0.1em; text-transform: uppercase;">Created by <a href="https://wa.me/923090757010" style="color: var(--accent-text); text-decoration: none; font-weight: bold;" target="_blank">Nest Portfolios</a></span>
+<button class="theme-toggle" id="themeToggle" title="Toggle theme">☽</button>
+<a class="nav-cta" href="#order">Order Now</a>
+<button class="hamburger" id="mobile-menu-btn" title="Menu" style="background:transparent; border:none; color:var(--sun1); font-size:1.5rem; cursor:pointer;"><i class="fas fa-bars"></i></button>
+</div>
+</nav>
+<!-- HERO -->
+<section class="hero" id="home">
+<div class="hero-inner" style="display: flex; flex-direction: column; text-align: center; gap: 40px; padding-top: 20px;">
+<div class="hero-visual" style="width: 100%; max-width: 1000px; margin: 0 auto;">
+<div class="hero-cover-wrap"><img alt="MCakes Cover" src="assets/images/cover.png" style="width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);"/></div>
+<div class="hero-badge" style="left: 50%; transform: translateX(-50%); bottom: -20px;">
+<div class="hero-badge-num">500+</div>
+<div class="hero-badge-text">Happy Celebrations</div>
+</div>
+</div>
+<div class="hero-text" style="display: flex; flex-direction: column; align-items: center;">
+<p class="hero-eyebrow">✦ Handcrafted in Dera Ismail Khan ✦</p>
+<h3 class="hero-title">
+        Every Slice Tells a<br/><em>Story</em>
+</h3>
+<p class="hero-subtitle" style="max-width: 600px; margin: 0 auto 30px auto;">
+        Bespoke celebration cakes crafted with artisan precision — where flavour meets unforgettable design. From intimate birthdays to grand occasions.
+      </p>
+<div class="hero-news" style="background: rgba(240, 192, 64, 0.1); border: 1px solid var(--sun1); border-radius: 4px; padding: 12px 20px; margin-bottom: 40px; max-width: 600px; color: var(--accent-text); font-size: 0.85rem; line-height: 1.5; font-weight: 400; text-align: center;">
+  <strong><i class="fas fa-clock" style="margin-right: 6px;"></i> Note:</strong> We are available everyday from 10:00 am to 10:00 pm. Kindly place your order before 18 hours.
+</div>
+<div class="hero-actions" style="justify-content: center; flex-wrap: wrap;">
+<a class="btn-primary" href="#cakes">Explore Cakes</a>
+<a class="btn-ghost" href="#order">Custom Order</a>
+<a class="btn-team" href="#" onclick="openTeam();return false;">Meet Our Team</a>
+</div>
+</div>
+</div>
+</section>
+<!-- MARQUEE -->
+<div class="marquee-strip">
+<div class="marquee-track" id="marqueeTrack">
+<span class="marquee-item">Birthday Cakes</span>
+<span class="marquee-item">Wedding Tiers</span>
+<span class="marquee-item">Barbie Cakes</span>
+<span class="marquee-item">Red Velvet</span>
+<span class="marquee-item">Saffron Almond</span>
+<span class="marquee-item">Cup Cakes</span>
+<span class="marquee-item">Cup Desserts</span>
+<span class="marquee-item">Photo Cakes</span>
+<span class="marquee-item">Custom Designs</span>
+<span class="marquee-item">Birthday Cakes</span>
+<span class="marquee-item">Wedding Tiers</span>
+<span class="marquee-item">Barbie Cakes</span>
+<span class="marquee-item">Red Velvet</span>
+<span class="marquee-item">Saffron Almond</span>
+<span class="marquee-item">Cup Cakes</span>
+<span class="marquee-item">Cup Desserts</span>
+<span class="marquee-item">Photo Cakes</span>
+<span class="marquee-item">Custom Designs</span>
+</div>
+</div>
+<!-- CAKES CATALOGUE -->
+<section id="cakes">
+<div class="cakes-section">
+<div class="section-header reveal">
+<span class="section-label">Our Creations</span>
+<h2 class="section-title">The <em>Catalogue</em></h2>
+</div>
+<div class="cakes-filter reveal">
+<button class="filter-btn active">All</button>
+<button class="filter-btn">Birthday</button>
+<button class="filter-btn">Wedding</button>
+<button class="filter-btn">Custom</button>
+<button class="filter-btn">Desserts</button>
+<button class="filter-btn">Sundaes</button>
+</div>
+<div class="cakes-grid"><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Almond Delight Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Almond Delight" src="assets/images/cakes/Almond Delight Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Almond Delight</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Almond Delight</div><div class="cake-tagline">Saffron and rich almond flavours</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Baby Doll Cake.jpeg', 'image')" style="display: block; cursor: pointer;"><img alt="Duchess Gown" src="assets/images/cakes/Baby Doll Cake.jpeg"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Duchess Gown</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Duchess Gown</div><div class="cake-tagline">Barbie doll with red rose tiers</div><div class="cake-price">From PKR 4,500</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Classic Birthday Pink Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Blush Whirl" src="assets/images/cakes/Classic Birthday Pink Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Blush Whirl</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Blush Whirl</div><div class="cake-tagline">Pink rosette with candy</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Custom Photo Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Memories Frame" src="assets/images/cakes/Custom Photo Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Memories Frame</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Memories Frame</div><div class="cake-tagline">Custom printed photo topper</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Elegant Purple Floral Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Purple Orchid" src="assets/images/cakes/Elegant Purple Floral Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Purple Orchid</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Purple Orchid</div><div class="cake-tagline">Floral buttercream elegance</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Golden Red Birthday Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Crimson Gold" src="assets/images/cakes/Golden Red Birthday Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Crimson Gold</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Crimson Gold</div><div class="cake-tagline">Golden flakes with red velvet</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Pink and Blue Floral Cream Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Pastel Dream" src="assets/images/cakes/Pink and Blue Floral Cream Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Pastel Dream</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Pastel Dream</div><div class="cake-tagline">Pink and blue floral piping</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Red Velvet Square Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Velvet Bloom" src="assets/images/cakes/Red Velvet Square Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Velvet Bloom</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Velvet Bloom</div><div class="cake-tagline">Square tiers of rich red velvet</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Rose Celebration Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Rose Celebration" src="assets/images/cakes/Rose Celebration Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Rose Celebration</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Rose Celebration</div><div class="cake-tagline">Ruby red roses with golden touch</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Sky Blue Celebration Cake with Pastries.png', 'image')" style="display: block; cursor: pointer;"><img alt="Cloud Nine" src="assets/images/cakes/Sky Blue Celebration Cake with Pastries.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Cloud Nine</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Cloud Nine</div><div class="cake-tagline">Sky blue with pastry bites</div><div class="cake-price">From PKR 1,800</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/White with Chocolate Celebration Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Marble Whisper" src="assets/images/cakes/White with Chocolate Celebration Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Marble Whisper</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Marble Whisper</div><div class="cake-tagline">White cream with chocolate shards</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/cakes/Yellow Garden Theme Cake.png', 'image')" style="display: block; cursor: pointer;"><img alt="Sunshine Garden" src="assets/images/cakes/Yellow Garden Theme Cake.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Catalogue</span><div class="cake-overlay-name">Sunshine Garden</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Sunshine Garden</div><div class="cake-tagline">Bright yellow with garden decor</div><div class="cake-price">From PKR 1,200</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/sundaes/Double Layered Cream Sundaes.png', 'image')" style="display: block; cursor: pointer;"><img alt="Double Layered Cream" src="assets/images/sundaes/Double Layered Cream Sundaes.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Sundaes</span><div class="cake-overlay-name">Double Layered Cream</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Double Layered Cream</div><div class="cake-tagline">Rich cream in double layers</div><div class="cake-price">PKR 300</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/images/sundaes/Strawberry Sundaes.png', 'image')" style="display: block; cursor: pointer;"><img alt="Strawberry Sundae" src="assets/images/sundaes/Strawberry Sundaes.png"/><div class="cake-overlay"><span class="cake-overlay-tag">Sundaes</span><div class="cake-overlay-name">Strawberry Sundae</div><button class="cake-overlay-btn" style="pointer-events: none;">View Full</button></div></div><div class="cake-info"><div class="cake-name">Strawberry Sundae</div><div class="cake-tagline">Fresh strawberries with cream</div><div class="cake-price">PKR 200</div></div></div></div>
+</div>
+</section><section id="videos"><div class="cakes-section"><div class="section-header reveal visible"><span class="section-label">Watch</span><h2 class="section-title">Our <em>Videos</em></h2></div><div class="cakes-grid"><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/videos/Almond Delight Cake.mp4', 'video')" style="display: block; cursor: pointer; position: relative;"><video autoplay="True" loop="True" muted="True" src="assets/videos/Almond Delight Cake.mp4" style="width: 100%; height: 260px; object-fit: cover; display: block;"></video><div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); pointer-events:none; border-radius:8px;"><i class="fas fa-play" style="font-size:3rem; color:var(--accent-text); opacity:0.8;"></i></div></div><div class="cake-info"><div class="cake-name">Almond Delight Cake</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/videos/Baby Doll Cake.mp4', 'video')" style="display: block; cursor: pointer; position: relative;"><video autoplay="True" loop="True" muted="True" src="assets/videos/Baby Doll Cake.mp4" style="width: 100%; height: 260px; object-fit: cover; display: block;"></video><div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); pointer-events:none; border-radius:8px;"><i class="fas fa-play" style="font-size:3rem; color:var(--accent-text); opacity:0.8;"></i></div></div><div class="cake-info"><div class="cake-name">Baby Doll Cake</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/videos/Custom Photo Cake.mp4', 'video')" style="display: block; cursor: pointer; position: relative;"><video autoplay="True" loop="True" muted="True" src="assets/videos/Custom Photo Cake.mp4" style="width: 100%; height: 260px; object-fit: cover; display: block;"></video><div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); pointer-events:none; border-radius:8px;"><i class="fas fa-play" style="font-size:3rem; color:var(--accent-text); opacity:0.8;"></i></div></div><div class="cake-info"><div class="cake-name">Custom Photo Cake</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/videos/Deewan Restaurant Cake.mp4', 'video')" style="display: block; cursor: pointer; position: relative;"><video autoplay="True" loop="True" muted="True" src="assets/videos/Deewan Restaurant Cake.mp4" style="width: 100%; height: 260px; object-fit: cover; display: block;"></video><div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); pointer-events:none; border-radius:8px;"><i class="fas fa-play" style="font-size:3rem; color:var(--accent-text); opacity:0.8;"></i></div></div><div class="cake-info"><div class="cake-name">Deewan Restaurant Cake</div></div></div><div class="cake-card reveal visible"><div class="cake-img-wrap" onclick="openLightbox('assets/videos/Yellow Garden Theme Cake.mp4', 'video')" style="display: block; cursor: pointer; position: relative;"><video autoplay="True" loop="True" muted="True" src="assets/videos/Yellow Garden Theme Cake.mp4" style="width: 100%; height: 260px; object-fit: cover; display: block;"></video><div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); pointer-events:none; border-radius:8px;"><i class="fas fa-play" style="font-size:3rem; color:var(--accent-text); opacity:0.8;"></i></div></div><div class="cake-info"><div class="cake-name">Yellow Garden Theme Cake</div></div></div></div></div></section>
+<!-- SPECIALTY / CRAFT -->
+<section id="specialty">
+<div class="specialty">
+<div class="specialty-visual reveal">
+<div class="specialty-img-main">
+<img alt="White birthday cake" src="assets/images/cakes/White with Chocolate Celebration Cake.png"/>
+</div>
+<div class="specialty-img-float">
+<img alt="Saffron almond cake" src="assets/images/cakes/Almond Delight Cake.png"/>
+</div>
+</div>
+<div class="specialty-content reveal">
+<span class="section-label">Our Craft</span>
+<h2 class="section-title" style="text-align:left;">Baked with <em>Soul</em></h2>
+<div class="specialty-accent"></div>
+<p class="specialty-desc">
+        Every MCake begins as a conversation. We listen to your vision, your story, the moments you want to celebrate — then translate them into flavour, texture and design that lingers long after the last slice.
+      </p>
+<ul class="specialty-list">
+<li>Fully custom designs tailored to your theme</li>
+<li>Premium ingredients — saffron, Belgian chocolate, fresh flowers</li>
+<li>Same-day &amp; next-day delivery in Dera Ismail Khan</li>
+<li>Eggless &amp; dietary options available</li>
+<li>Cupcake sets, cup desserts &amp; full dessert tables</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- TESTIMONIALS -->
+<section>
+<div class="testimonials">
+<div class="section-header reveal" style="margin-bottom:48px;">
+<span class="section-label">What They Say</span>
+<h2 class="section-title" style="color:var(--hero1);">Moments <em>Remembered</em></h2>
+</div>
+<div class="testimonials-grid">
+<div class="testi-card reveal">
+<div class="testi-stars">★★★★★</div>
+<p class="testi-text">"The Barbie cake was absolutely breathtaking. Every guest stopped to photograph it before we could even cut it!"</p>
+<div class="testi-author">Naylah Khan</div>
+<div class="testi-role">Daughter's 7th Birthday, Dera Ismail Khan</div>
+</div>
+<div class="testi-card reveal">
+<div class="testi-stars">★★★★★</div>
+<p class="testi-text">"Ordered the photo cake for a friends' reunion — the image quality on the cake was stunning and the taste even better."</p>
+<div class="testi-author">Sana Saeed</div>
+<div class="testi-role">Surprise Party, Dera Ismail Khan</div>
+</div>
+<div class="testi-card reveal">
+<div class="testi-stars">★★★★★</div>
+<p class="testi-text">"The saffron almond cake was unlike anything I've tasted. Delivered perfectly on time with the most elegant packaging."</p>
+<div class="testi-author">Haris Khalid</div>
+<div class="testi-role">Anniversary Celebration, Dera Ismail Khan</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ORDER SECTION -->
+<section id="order"><div class="section-header reveal visible" style="margin-bottom: 40px; text-align: center; padding-top: 80px;"><span class="section-label">Order &amp; Contact</span><h2 class="section-title">Get in <em>Touch</em></h2><p style="color: var(--accent-text); font-weight: bold; margin-top: 20px; font-size: 1.1rem;">Note: We only provide services in Dera Ismail Khan. Choose how you'd like to reach us below.</p></div><div class="order-section" style="grid-template-columns: 1fr 1fr; align-items: start; gap: 40px; padding-top: 0;"><div class="reveal visible" style="background: var(--bg-card); padding: 40px; border: 1px solid var(--border); border-radius: 4px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;"><h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; margin-bottom: 20px; color: var(--text);">Direct Message</h3><p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 30px;">Have a quick question, need to discuss a custom design, or want to say hello? Send us a direct message on WhatsApp!</p><a href="https://wa.me/923359244499" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; color: #fff !important; background-color: #25D366; padding: 16px 32px; border-radius: 4px; font-size: 1rem; font-weight: bold; text-decoration: none; transition: transform 0.3s;" target="_blank"><i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i> Direct Message</a></div><div class="order-form reveal" style="margin: 0; height: 100%;">
+<h3><span style="color: var(--text);">Place an Order</span></h3>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Your Name</label>
+<input class="form-input" id="wa-name" placeholder="Ayesha Khan" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Phone</label>
+<input class="form-input" id="wa-phone" placeholder="+92 300 000 0000" type="tel"/>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Occasion</label>
+<select class="form-select" id="wa-occasion">
+<option disabled="" selected="" value="">Select occasion</option>
+<option>Birthday</option>
+<option>Wedding / Engagement</option>
+<option>Anniversary</option>
+<option>Baby Shower</option>
+<option>Corporate Event</option>
+<option>Other</option>
+</select>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Cake Size</label>
+<select class="form-select" id="wa-size">
+<option disabled="" selected="" value="">Select size</option>
+<option>1 pound — Serves 2-3</option>
+<option>2 pound — Serves 4-6</option>
+<option>3 pound — Serves 7-10</option>
+<option>Custom / Multi-tier</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Delivery Date</label>
+<input class="form-input" id="wa-date" type="date"/>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Design Notes</label>
+<textarea class="form-textarea" id="wa-notes" placeholder="Describe your dream cake — colours, theme, any text or photos..."></textarea>
+</div>
+<button class="form-submit" id="wa-submit">Send Order Request ✦</button>
+</div></div></section>
+<!-- FOOTER -->
+<footer id="footer">
+<div class="footer-grid">
+<div>
+<div class="footer-brand-name">MCakes</div>
+<p class="footer-brand-desc">Artisan celebration cakes handcrafted in Dera ismail Khan. Every occasion deserves something extraordinary.</p>
+<div class="footer-socials">
+<a class="social-btn" href="https://www.facebook.com/share/1G8k2zKy4Z/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+<a class="social-btn" href="https://wa.me/923359244499" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<a class="social-btn" href="https://www.tiktok.com/@mcakes.dik?_r=1&_t=ZS-94tSX4dy1Vw" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+</div>
+</div>
+<div>
+<div class="footer-col-title">Catalogue</div>
+<ul class="footer-links">
+<li><a href="#">Birthday Cakes</a></li>
+<li><a href="#">Wedding Cakes</a></li>
+<li><a href="#">Barbie Cakes</a></li>
+<li><a href="#">Photo Cakes</a></li>
+<li><a href="#">Cup Desserts</a></li>
+<li><a href="#">Cupcakes</a></li>
+</ul>
+</div>
+<div>
+<div class="footer-col-title">Quick Links</div>
+<ul class="footer-links">
+<li><a href="#">Our Story</a></li>
+<li><a href="#">Custom Orders</a></li>
+<li><a href="#">Delivery Info</a></li>
+<li><a href="#">Pricing Guide</a></li>
+<li><a href="#">FAQs</a></li>
+</ul>
+</div>
+<div>
+<div class="footer-col-title">Contact</div>
+<ul class="footer-links">
+<li><a href="#">+92 300 000 0000</a></li>
+<li><a href="#"><span class="__cf_email__" data-cfemail="137c6177766160537e70727876603d6378">[email protected]</span></a></li>
+<li><a href="#">Dera Ismail Khan, Pakistan</a></li>
+<li><a href="#">Mon – Sat, 9am – 9pm</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span class="footer-copy">© 2025 MCakes. All rights reserved. Crafted with ✦ in Dera Ismail Khan. <br><br>Created by <a href="https://wa.me/923090757010" style="color: var(--accent-text); text-decoration: none; font-weight: bold;" target="_blank">Nest Portfolios</a></span>
+<span class="footer-copy">Privacy Policy · Terms of Service</span>
+</div>
+</footer>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<!-- ============================================================ TEAM PAGE -->
+<div id="teamPage">
+<canvas id="teamCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
+<nav class="team-page-nav">
+<div class="team-page-logo">MCakes</div>
+<div style="display:flex;align-items:center;gap:16px;">
+<span style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);">The People Behind Every Cake</span>
+<button class="team-close-btn" onclick="closeTeam()" title="Back to main">✕</button>
+</div>
+</nav>
+<!-- Banner -->
+<div class="team-hero-banner" style="position:relative;z-index:1;">
+<span class="team-banner-label">✦ Our People ✦</span>
+<h1 class="team-banner-title">Meet the <em>Artisans</em></h1>
+<p class="team-banner-sub">Every cake carries the dedication, creativity, and heart of the remarkable individuals who craft it — from kitchen discipline to artistic mastery.</p>
+</div>
+<!-- Members -->
+<div class="team-members-wrap" style="position:relative;z-index:1;">
+<!-- MEMBER 1: Kalsoom Saleem -->
+<div class="member-block">
+<div class="member-portrait">
+<div class="member-portrait-inner">
+<div class="member-avatar" style="display: block; width: 100%; height: 100%; border-radius: inherit; overflow: hidden;"><img alt="Kalsoom Saleem" src="assets/images/team_members/kalsoom_saleem.png" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;"/></div>
+</div>
+<div class="member-role-badge">Supervisor</div>
+<div class="member-exp-badge">
+<span class="exp-num">2+</span>
+<span class="exp-label">Years Exp.</span>
+</div>
+</div>
+<div class="member-details">
+<h2 class="member-name">Kalsoom <em>Saleem</em></h2>
+<div class="member-role-text">Kitchen Supervisor</div>
+<p class="member-desc">Kalsoom is the backbone of the MCakes kitchen — ensuring that every product that leaves our doors meets the highest standards of quality, hygiene, and consistency. With 2+ years of hands-on experience, she maintains the structured 5S kitchen discipline that makes our production both efficient and world-class.</p>
+<div class="responsibilities-title">Core Responsibilities</div>
+<ul class="resp-list">
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon">✦</span>
+<span class="resp-name">Quality Control</span>
+<span class="resp-desc">Oversees and maintains the quality of all MCakes products from batter to final decoration</span>
+</div>
+</li>
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon">✦</span>
+<span class="resp-name">Kitchen Hygiene</span>
+<span class="resp-desc">Ensures a clean, sanitized, and safe working environment at all times</span>
+</div>
+</li>
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon">✦</span>
+<span class="resp-name">SOP Compliance</span>
+<span class="resp-desc">Enforces standard operating procedures for cake making, cleaning, and organization</span>
+</div>
+</li>
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon">✦</span>
+<span class="resp-name">Kitchen Audits</span>
+<span class="resp-desc">Leads regular audits and instills a culture of discipline and continuous improvement</span>
+</div>
+</li>
+</ul>
+<!-- 5S Methodology -->
+<div style="margin-top:36px;">
+<div class="responsibilities-title">5S Kitchen Methodology</div>
+<p style="font-size:0.72rem;letter-spacing:0.06em;color:var(--text-muted);line-height:1.7;margin-bottom:18px;">
+            Kalsoom champions the Japanese 5S framework — the gold standard for productive, safe, and efficient kitchens.
+          </p>
+<div class="fives-grid">
+<div class="fives-card">
+<div class="fives-s">1S</div>
+<div class="fives-name">Sort · Seiri</div>
+<div class="fives-desc">Remove unnecessary items from the kitchen. Keep only what's needed for cake production, eliminating clutter and confusion.</div>
+</div>
+<div class="fives-card">
+<div class="fives-s">2S</div>
+<div class="fives-name">Set in Order · Seiton</div>
+<div class="fives-desc">Organize ingredients, tools, and equipment for efficient cake making. Label and place items in designated, logical spots.</div>
+</div>
+<div class="fives-card">
+<div class="fives-s">3S</div>
+<div class="fives-name">Shine · Seiso</div>
+<div class="fives-desc">Clean and sanitize the kitchen, equipment, and tools after each use. Maintain a hygienic and safe environment at all times.</div>
+</div>
+<div class="fives-card">
+<div class="fives-s">4S</div>
+<div class="fives-name">Standardize · Seiketsu</div>
+<div class="fives-desc">Follow standard operating procedures (SOPs) for cake making, cleaning, and organization across all team activities.</div>
+</div>
+<div class="fives-card" style="grid-column:span 2;">
+<div class="fives-s">5S</div>
+<div class="fives-name">Sustain · Shitsuke</div>
+<div class="fives-desc">Make 5S a daily habit. Participate in regular kitchen audits, maintain discipline, and ensure the safe, efficient, and productive MCakes kitchen never slips — this is Kalsoom's ultimate goal.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Divider -->
+<div class="team-divider">
+<span class="team-divider-icon">✦</span>
+</div>
+<!-- MEMBER 2: Meerab Hassan -->
+<div class="member-block">
+<div class="member-portrait">
+<div class="member-portrait-inner">
+<div class="member-avatar" style="display: block; width: 100%; height: 100%; border-radius: inherit; overflow: hidden;"><img alt="Meerab Hassan" src="assets/images/team_members/meerab_hassan.png" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;"/></div>
+</div>
+<div class="member-role-badge" style="background:linear-gradient(135deg,var(--moon1),var(--moon2));color:var(--hero1);">Cake Artist</div>
+<div class="member-exp-badge">
+<span class="exp-num">3+</span>
+<span class="exp-label">Years Exp.</span>
+</div>
+</div>
+<div class="member-details">
+<h2 class="member-name">Meerab <em>Hassan</em></h2>
+<div class="member-role-text" style="color:var(--moon2);">Cake Artist &amp; Baker</div>
+<p class="member-desc">Meerab is the creative heart of MCakes — the talent who transforms visions into edible masterpieces. With 3+ years of specialized experience in custom cake design, she brings an exceptional eye for aesthetics, deep flavour knowledge, and the artistic skill to execute even the most complex designs under pressure.</p>
+<div class="responsibilities-title">Core Responsibilities</div>
+<ul class="resp-list">
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon" style="color:var(--moon2);">✦</span>
+<span class="resp-name">Bake &amp; Design</span>
+<span class="resp-desc">Bakes and designs cakes tailored precisely to each customer's requirements and theme</span>
+</div>
+</li>
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon" style="color:var(--moon2);">✦</span>
+<span class="resp-name">Custom Creations</span>
+<span class="resp-desc">Specializes in fully customized birthday and wedding cakes with intricate hand-crafted decoration</span>
+</div>
+</li>
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon" style="color:var(--moon2);">✦</span>
+<span class="resp-name">Bulk Event Orders</span>
+<span class="resp-desc">Successfully manages and delivers bulk cake orders for large events, parties, and corporate occasions</span>
+</div>
+</li>
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon" style="color:var(--moon2);">✦</span>
+<span class="resp-name">Flavour Expertise</span>
+<span class="resp-desc">Strong understanding of flavour combinations, current trends, and customer taste preferences</span>
+</div>
+</li>
+<li class="resp-item">
+<div class="resp-item-inner">
+<span class="resp-icon" style="color:var(--moon2);">✦</span>
+<span class="resp-name">Customer Satisfaction</span>
+<span class="resp-desc">Consistently delivers high customer satisfaction through quality, creativity, and attention to detail</span>
+</div>
+</li>
+</ul>
+<!-- Skills -->
+<div style="margin-top:32px;">
+<div class="responsibilities-title">Specializations &amp; Skills</div>
+<div class="skills-row">
+<span class="skill-tag">Birthday Cakes</span>
+<span class="skill-tag">Wedding Tiers</span>
+<span class="skill-tag">Barbie Cakes</span>
+<span class="skill-tag">Fondant Art</span>
+<span class="skill-tag">Buttercream Florals</span>
+<span class="skill-tag">Photo Printing</span>
+<span class="skill-tag">Red Velvet</span>
+<span class="skill-tag">Saffron &amp; Nuts</span>
+<span class="skill-tag">Cup Desserts</span>
+<span class="skill-tag">Bulk Orders</span>
+<span class="skill-tag">Flavour Pairing</span>
+<span class="skill-tag">Trend Research</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom CTA -->
+<div class="team-page-cta" style="position:relative;z-index:1;">
+<h3>Ready to work with our <em style="color:var(--accent-text);">team?</em></h3>
+<p>Let Kalsoom's precision and Meerab's artistry bring your celebration cake to life.</p>
+<button class="btn-primary" onclick="closeTeam();setTimeout(()=&gt;{document.getElementById('order').scrollIntoView({behavior:'smooth'})},400)">Place a Custom Order ✦</button>
+</div>
+</div>
+<script src="script.js"></script><div id="lightbox" onclick="closeLightbox()" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 10000; align-items: center; justify-content: center; flex-direction: column;"><button onclick="closeLightbox()" style="position: absolute; top: 30px; right: 40px; background: transparent; border: none; color: #fff; font-size: 4rem; cursor: pointer; line-height: 1; transition: transform 0.2s;">×</button><img id="lightbox-img" onclick="event.stopPropagation()" style="display: none; max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);"/><video autoplay="True" controls="True" id="lightbox-video" onclick="event.stopPropagation()" style="display: none; max-width: 90vw; max-height: 85vh; border-radius: 8px; background: #000; box-shadow: 0 10px 40px rgba(0,0,0,0.5);"></video></div></body>
+</html>
