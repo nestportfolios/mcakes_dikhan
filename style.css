@@ -86,7 +86,7 @@ body {
 /* ============================================================ CUSTOM CURSOR */
 .cursor {
   position: fixed;
-  width: 12px; height: 12px;
+  width: 8px; height: 8px;
   background: var(--sun1);
   border-radius: 50%;
   pointer-events: none;
@@ -97,7 +97,7 @@ body {
 }
 .cursor-ring {
   position: fixed;
-  width: 36px; height: 36px;
+  width: 28px; height: 28px;
   border: 1.5px solid var(--sun1);
   border-radius: 50%;
   pointer-events: none;
@@ -1396,11 +1396,12 @@ footer {
   font-size: 2.4rem;
   font-weight: 300;
   margin-bottom: 14px;
+  color: var(--hero1);
 }
 .team-page-cta p {
   font-size: 0.78rem;
   letter-spacing: 0.1em;
-  color: var(--text-muted);
+  color: var(--text-muted-dark);
   margin-bottom: 32px;
 }
 
