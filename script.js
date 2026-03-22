@@ -16,7 +16,7 @@ function animRing() {
 }
 animRing();
 document.querySelectorAll('a, button, .cake-card, .filter-btn').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.2)'; ring.style.transform = 'translate(-50%,-50%) scale(1.4)'; });
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1.6)'; ring.style.transform = 'translate(-50%,-50%) scale(1.15)'; });
   el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.transform = 'translate(-50%,-50%) scale(1)'; });
 });
 
@@ -71,7 +71,7 @@ function createParticle() {
     size: Math.random() * 18 + 8,
     // EXACT user spec: thickness Math.random()*1.2+1.0, opacity Math.random()*0.5+0.8
     thickness: Math.random() * 1.2 + 1.0,
-    opacity: Math.random() * 0.5 + 0.8,
+    opacity: Math.random() * 0.4 + 0.4,
     rotation: Math.random() * Math.PI * 2,
     rotSpeed: (Math.random() * 0.012 - 0.006),
     wobble: Math.random() * Math.PI * 2,
@@ -83,7 +83,7 @@ function createParticle() {
   };
 }
 
-const particles = Array.from({ length: 55 }, createParticle);
+const particles = Array.from({ length: 30 }, createParticle);
 
 function drawBulbLeaf(p) {
   const t = document.documentElement.getAttribute('data-theme');
@@ -191,7 +191,7 @@ function closeTeam() {
       speedY:-(Math.random()*0.9+0.4),
       size:Math.random()*18+8,
       thickness:Math.random()*1.2+1.0,
-      opacity:Math.random()*0.5+0.8,
+      opacity:Math.random()*0.15+0.15,
       rotation:Math.random()*Math.PI*2,
       rotSpeed:(Math.random()*0.012-0.006),
       wobble:Math.random()*Math.PI*2,
@@ -200,7 +200,7 @@ function closeTeam() {
       life:0, maxLife:Math.random()*380+220
     };
   }
-  const pts = Array.from({length:40},mkP);
+  const pts = Array.from({length:20},mkP);
   function drawL(p){
     const t = document.documentElement.getAttribute('data-theme');
     tx.save(); tx.translate(p.x,p.y); tx.rotate(p.rotation);
