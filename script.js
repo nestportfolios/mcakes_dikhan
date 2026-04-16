@@ -1,32 +1,116 @@
-/* ============================================================ CURSOR */
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top = my + 'px';
-});
-function animRing() {
-  rx += (mx - rx) * 0.14;
-  ry += (my - ry) * 0.14;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animRing);
+/* ============================================================ 
+   MCakes — Script
+   Sparkle Trail Cursor, Vaporwave Canvas, Nav Active Indicator,
+   Amazon-style Zoom, WhatsApp Integration, Theme Toggle
+   ============================================================ */
+
+/* ============================================================ CUSTOM CURSOR — Sparkle Trail */
+const cursorDot = document.getElementById('cursorDot');
+let mx = 0, my = 0;
+
+// Create trail particles
+const TRAIL_COUNT = 12;
+const trails = [];
+for (let i = 0; i < TRAIL_COUNT; i++) {
+  const t = document.createElement('div');
+  t.classList.add('cursor-trail');
+  document.body.appendChild(t);
+  trails.push({ el: t, x: 0, y: 0 });
 }
-animRing();
-document.querySelectorAll('a, button, .cake-card, .filter-btn').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1.6)'; ring.style.transform = 'translate(-50%,-50%) scale(1.15)'; });
-  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.transform = 'translate(-50%,-50%) scale(1)'; });
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
+  cursorDot.style.left = mx + 'px';
+  cursorDot.style.top = my + 'px';
 });
 
-/* ============================================================ THEME */
+function animTrail() {
+  let prevX = mx, prevY = my;
+  for (let i = 0; i < trails.length; i++) {
+    const t = trails[i];
+    const speed = 0.2 - (i * 0.012);
+    t.x += (prevX - t.x) * Math.max(speed, 0.04);
+    t.y += (prevY - t.y) * Math.max(speed, 0.04);
+    t.el.style.left = t.x + 'px';
+    t.el.style.top = t.y + 'px';
+    t.el.style.opacity = (1 - i / trails.length) * 0.6;
+    t.el.style.transform = `translate(-50%, -50%) scale(${1 - i * 0.06})`;
+    prevX = t.x;
+    prevY = t.y;
+  }
+  requestAnimationFrame(animTrail);
+}
+animTrail();
+
+// Cursor hover effects
+document.querySelectorAll('a, button, .cake-card, .filter-btn, .trust-card, .hero-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursorDot.classList.add('hovering');
+  });
+  el.addEventListener('mouseleave', () => {
+    cursorDot.classList.remove('hovering');
+  });
+});
+
+/* ============================================================ THEME TOGGLE */
 const themeBtn = document.getElementById('themeToggle');
 let dark = true;
 themeBtn.addEventListener('click', () => {
   dark = !dark;
   document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
   themeBtn.textContent = dark ? '☽' : '☀';
+});
+
+/* ============================================================ NAV ACTIVE INDICATOR */
+const navLinks = document.querySelectorAll('#navLinks a');
+const navIndicator = document.getElementById('navIndicator');
+
+function updateIndicator(link) {
+  if (!navIndicator || !link) return;
+  const rect = link.getBoundingClientRect();
+  const parentRect = link.closest('ul').getBoundingClientRect();
+  navIndicator.style.left = (rect.left - parentRect.left) + 'px';
+  navIndicator.style.width = rect.width + 'px';
+}
+
+navLinks.forEach(link => {
+  link.addEventListener('mouseenter', () => updateIndicator(link));
+});
+
+// Reset indicator on mouse leave
+const navLinksContainer = document.getElementById('navLinks');
+if (navLinksContainer) {
+  navLinksContainer.addEventListener('mouseleave', () => {
+    // Find active section
+    const activeLink = document.querySelector('#navLinks a.active') || navLinks[0];
+    if (activeLink) updateIndicator(activeLink);
+  });
+}
+
+// Track scroll to highlight active section
+const sections = document.querySelectorAll('section[id]');
+function onScroll() {
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 200;
+    if (window.scrollY >= top) {
+      current = sec.getAttribute('id');
+    }
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    const href = link.getAttribute('href');
+    if (href && href.includes(current) && current) {
+      link.classList.add('active');
+      if (window.innerWidth > 1024) updateIndicator(link);
+    }
+  });
+}
+window.addEventListener('scroll', onScroll);
+window.addEventListener('load', () => {
+  onScroll();
+  if (navLinks[0]) updateIndicator(navLinks[0]);
 });
 
 /* ============================================================ FILTER BUTTONS */
@@ -49,7 +133,7 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 revealEls.forEach(el => io.observe(el));
 
-/* ============================================================ CANVAS — BULB LEAF ANIMATION */
+/* ============================================================ CANVAS — Vaporwave / Minimalist Particles */
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -60,99 +144,64 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-// Each "bulb leaf" = an elongated teardrop / leaf shape
 function createParticle() {
-  const side = Math.random() > 0.5 ? 1 : -1;
   return {
     x: Math.random() * canvas.width,
     y: canvas.height + 60,
-    speedX: (Math.random() * 0.6 - 0.3) * side,
-    speedY: -(Math.random() * 0.9 + 0.4),
-    size: Math.random() * 18 + 8,
-    // EXACT user spec: thickness Math.random()*1.2+1.0, opacity Math.random()*0.5+0.8
-    thickness: Math.random() * 1.2 + 1.0,
-    opacity: Math.random() * 0.4 + 0.4,
-    rotation: Math.random() * Math.PI * 2,
-    rotSpeed: (Math.random() * 0.012 - 0.006),
+    speedX: (Math.random() * 0.5 - 0.25),
+    speedY: -(Math.random() * 0.7 + 0.3),
+    size: Math.random() * 3 + 1,
+    opacity: Math.random() * 0.4 + 0.1,
     wobble: Math.random() * Math.PI * 2,
-    wobbleSpeed: Math.random() * 0.03 + 0.01,
-    // color: mix of sun gold & soul violet & moon crimson
-    colorType: Math.floor(Math.random() * 3),
+    wobbleSpeed: Math.random() * 0.02 + 0.005,
     life: 0,
-    maxLife: Math.random() * 380 + 220,
+    maxLife: Math.random() * 400 + 200,
+    colorType: Math.floor(Math.random() * 3),
   };
 }
 
-const particles = Array.from({ length: 30 }, createParticle);
+const particles = Array.from({ length: 40 }, createParticle);
 
-function drawBulbLeaf(p) {
-  const t = document.documentElement.getAttribute('data-theme');
-  ctx.save();
-  ctx.translate(p.x, p.y);
-  ctx.rotate(p.rotation);
-
-  // Color selection based on theme
-  let stroke, fill;
-  if (p.colorType === 0) {
-    // Sunshine gold
-    stroke = t === 'dark' ? `rgba(240,192,64,${p.opacity * 0.9})` : `rgba(180,122,0,${p.opacity * 0.6})`;
-    fill = t === 'dark' ? `rgba(240,192,64,${p.opacity * 0.12})` : `rgba(240,192,64,${p.opacity * 0.1})`;
-  } else if (p.colorType === 1) {
-    // Soul indigo
-    stroke = t === 'dark' ? `rgba(155,100,220,${p.opacity * 0.7})` : `rgba(74,45,138,${p.opacity * 0.5})`;
-    fill = t === 'dark' ? `rgba(155,100,220,${p.opacity * 0.08})` : `rgba(74,45,138,${p.opacity * 0.07})`;
-  } else {
-    // Moon crimson
-    stroke = t === 'dark' ? `rgba(192,57,43,${p.opacity * 0.65})` : `rgba(155,27,48,${p.opacity * 0.4})`;
-    fill = t === 'dark' ? `rgba(192,57,43,${p.opacity * 0.08})` : `rgba(192,57,43,${p.opacity * 0.07})`;
-  }
-
-  // Draw bulb-leaf shape
-  const s = p.size;
-  const sw = s * 0.38 * p.thickness; // width controlled by user thickness spec
-
-  ctx.beginPath();
-  ctx.moveTo(0, -s * 0.5);
-  ctx.bezierCurveTo(sw, -s * 0.2, sw, s * 0.3, 0, s * 0.5);
-  ctx.bezierCurveTo(-sw, s * 0.3, -sw, -s * 0.2, 0, -s * 0.5);
-
-  ctx.fillStyle = fill;
-  ctx.fill();
-  ctx.strokeStyle = stroke;
-  ctx.lineWidth = p.thickness;
-  ctx.stroke();
-
-  // center vein
-  ctx.beginPath();
-  ctx.moveTo(0, -s * 0.42);
-  ctx.lineTo(0, s * 0.42);
-  ctx.strokeStyle = stroke;
-  ctx.lineWidth = p.thickness * 0.5;
-  ctx.globalAlpha = 0.5;
-  ctx.stroke();
-  ctx.globalAlpha = 1;
-
-  ctx.restore();
-}
-
-let frame = 0;
 function animCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const t = document.documentElement.getAttribute('data-theme');
 
   for (let i = 0; i < particles.length; i++) {
     const p = particles[i];
     p.life++;
-    p.x += p.speedX + Math.sin(p.wobble) * 0.3;
+    p.x += p.speedX + Math.sin(p.wobble) * 0.2;
     p.y += p.speedY;
-    p.rotation += p.rotSpeed;
     p.wobble += p.wobbleSpeed;
 
-    // Fade in/out using life
     const lifeFrac = p.life / p.maxLife;
     const fadeAlpha = lifeFrac < 0.1 ? lifeFrac * 10 : lifeFrac > 0.85 ? (1 - lifeFrac) / 0.15 : 1;
-    ctx.globalAlpha = fadeAlpha;
 
-    drawBulbLeaf(p);
+    ctx.globalAlpha = fadeAlpha * p.opacity;
+
+    let color;
+    if (t === 'dark') {
+      if (p.colorType === 0) color = '#ff4df0';
+      else if (p.colorType === 1) color = '#ffea61';
+      else color = '#8b5cf6';
+    } else {
+      if (p.colorType === 0) color = 'rgba(0,0,0,0.1)';
+      else if (p.colorType === 1) color = 'rgba(0,0,0,0.06)';
+      else color = 'rgba(0,0,0,0.08)';
+    }
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    // Glow in dark mode
+    if (t === 'dark') {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.globalAlpha = fadeAlpha * p.opacity * 0.08;
+      ctx.fill();
+    }
 
     ctx.globalAlpha = 1;
 
@@ -161,7 +210,6 @@ function animCanvas() {
     }
   }
 
-  frame++;
   requestAnimationFrame(animCanvas);
 }
 animCanvas();
@@ -176,10 +224,10 @@ function closeTeam() {
   document.body.style.overflow = '';
 }
 
-
-/* Team page canvas — same bulb leaf animation */
+/* Team page canvas — same particle style */
 (function(){
   const tc = document.getElementById('teamCanvas');
+  if (!tc) return;
   const tx = tc.getContext('2d');
   function resizeT(){ tc.width=window.innerWidth; tc.height=window.innerHeight; }
   resizeT(); window.addEventListener('resize', resizeT);
@@ -187,47 +235,39 @@ function closeTeam() {
   function mkP(){
     return {
       x: Math.random()*tc.width, y: tc.height+60,
-      speedX:(Math.random()*0.6-0.3)*(Math.random()>.5?1:-1),
-      speedY:-(Math.random()*0.9+0.4),
-      size:Math.random()*18+8,
-      thickness:Math.random()*1.2+1.0,
-      opacity:Math.random()*0.15+0.15,
-      rotation:Math.random()*Math.PI*2,
-      rotSpeed:(Math.random()*0.012-0.006),
+      speedX:(Math.random()*0.5-0.25),
+      speedY:-(Math.random()*0.6+0.3),
+      size:Math.random()*2.5+1,
+      opacity:Math.random()*0.15+0.05,
       wobble:Math.random()*Math.PI*2,
-      wobbleSpeed:Math.random()*0.03+0.01,
+      wobbleSpeed:Math.random()*0.02+0.005,
       colorType:Math.floor(Math.random()*3),
-      life:0, maxLife:Math.random()*380+220
+      life:0, maxLife:Math.random()*400+200
     };
   }
-  const pts = Array.from({length:20},mkP);
-  function drawL(p){
-    const t = document.documentElement.getAttribute('data-theme');
-    tx.save(); tx.translate(p.x,p.y); tx.rotate(p.rotation);
-    let stroke,fill;
-    if(p.colorType===0){stroke=`rgba(240,192,64,${p.opacity*.9})`;fill=`rgba(240,192,64,${p.opacity*.1})`;}
-    else if(p.colorType===1){stroke=`rgba(155,100,220,${p.opacity*.7})`;fill=`rgba(155,100,220,${p.opacity*.08})`;}
-    else{stroke=`rgba(192,57,43,${p.opacity*.65})`;fill=`rgba(192,57,43,${p.opacity*.08})`;}
-    const s=p.size, sw=s*0.38*p.thickness;
-    tx.beginPath();
-    tx.moveTo(0,-s*.5);
-    tx.bezierCurveTo(sw,-s*.2,sw,s*.3,0,s*.5);
-    tx.bezierCurveTo(-sw,s*.3,-sw,-s*.2,0,-s*.5);
-    tx.fillStyle=fill; tx.fill();
-    tx.strokeStyle=stroke; tx.lineWidth=p.thickness; tx.stroke();
-    tx.beginPath(); tx.moveTo(0,-s*.42); tx.lineTo(0,s*.42);
-    tx.lineWidth=p.thickness*.5; tx.globalAlpha=0.5; tx.stroke();
-    tx.globalAlpha=1; tx.restore();
-  }
+  const pts = Array.from({length:25},mkP);
   function animT(){
     tx.clearRect(0,0,tc.width,tc.height);
+    const theme = document.documentElement.getAttribute('data-theme');
     for(let i=0;i<pts.length;i++){
       const p=pts[i]; p.life++;
-      p.x+=p.speedX+Math.sin(p.wobble)*.3; p.y+=p.speedY;
-      p.rotation+=p.rotSpeed; p.wobble+=p.wobbleSpeed;
+      p.x+=p.speedX+Math.sin(p.wobble)*.2; p.y+=p.speedY;
+      p.wobble+=p.wobbleSpeed;
       const lf=p.life/p.maxLife;
       const fa=lf<.1?lf*10:lf>.85?(1-lf)/.15:1;
-      tx.globalAlpha=fa; drawL(p); tx.globalAlpha=1;
+      tx.globalAlpha=fa*p.opacity;
+      let c;
+      if(theme==='dark'){
+        if(p.colorType===0)c='#ff4df0';
+        else if(p.colorType===1)c='#ffea61';
+        else c='#8b5cf6';
+      } else {
+        c='rgba(0,0,0,0.06)';
+      }
+      tx.beginPath();
+      tx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      tx.fillStyle=c; tx.fill();
+      tx.globalAlpha=1;
       if(p.life>=p.maxLife||p.y<-60) pts[i]=mkP();
     }
     requestAnimationFrame(animT);
@@ -235,131 +275,182 @@ function closeTeam() {
   animT();
 })();
 
-// Set minimum date to today for the date picker
+/* ============================================================ DATE PICKER MIN */
 document.addEventListener('DOMContentLoaded', () => {
-    const dateInput = document.getElementById('wa-date');
-    if (dateInput) {
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
-    }
+  const dateInput = document.getElementById('wa-date');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+  }
 });
 
-// WhatsApp Integration
+/* ============================================================ WHATSAPP ORDER FORM */
 document.addEventListener('click', (e) => {
-    if (e.target && e.target.id === 'wa-submit') {
-        e.preventDefault();
-        
-        const name = document.getElementById('wa-name')?.value || '';
-        const phone = document.getElementById('wa-phone')?.value || '';
-        const occasion = document.getElementById('wa-occasion')?.value || '';
-        const size = document.getElementById('wa-size')?.value || '';
-        const rawDate = document.getElementById('wa-date')?.value || '';
-        const notes = document.getElementById('wa-notes')?.value || '';
-        
-        let formattedDate = rawDate;
-        if (rawDate) {
-            const d = new Date(rawDate);
-            formattedDate = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-        }
-        
-        if (!name || !phone) {
-            alert('Please fill in at least your name and phone number.');
-            return;
-        }
-        
-        let message = `Hello MCakes! I would like to place an order:\n\n`;
-        message += `*Name:* ${name}\n`;
-        message += `*Phone:* ${phone}\n`;
-        message += `*Occasion:* ${occasion}\n`;
-        message += `*Cake Size:* ${size}\n`;
-        message += `*Delivery Date:* ${formattedDate}\n`;
-        if (notes) {
-            message += `*Design Notes:* ${notes}\n`;
-        }
-        
-        const waUrl = `https://wa.me/923359244499?text=${encodeURIComponent(message)}`;
-        
-        const waSubmit = e.target;
-        const oldText = waSubmit.textContent;
-        waSubmit.textContent = "Your order submitted ✓";
-        waSubmit.style.background = "#25D366";
-        waSubmit.style.color = "#fff";
-        
-        // Open WhatsApp
-        window.open(waUrl, '_blank');
-        
-        // Provide the success message to the user
-        alert("Your order is submitted! We are redirecting you to WhatsApp to complete ✦");
-        
-        setTimeout(() => {
-            waSubmit.textContent = oldText;
-            waSubmit.style.background = "";
-            waSubmit.style.color = "";
-        }, 5000);
+  if (e.target && e.target.id === 'wa-submit') {
+    e.preventDefault();
+    
+    const name = document.getElementById('wa-name')?.value || '';
+    const phone = document.getElementById('wa-phone')?.value || '';
+    const occasion = document.getElementById('wa-occasion')?.value || '';
+    const size = document.getElementById('wa-size')?.value || '';
+    const rawDate = document.getElementById('wa-date')?.value || '';
+    const notes = document.getElementById('wa-notes')?.value || '';
+    
+    let formattedDate = rawDate;
+    if (rawDate) {
+      const d = new Date(rawDate);
+      formattedDate = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     }
+    
+    if (!name || !phone) {
+      alert('Please fill in at least your name and phone number.');
+      return;
+    }
+    
+    let message = `Hello MCakes! I would like to place an order:\n\n`;
+    message += `*Name:* ${name}\n`;
+    message += `*Phone:* ${phone}\n`;
+    message += `*Occasion:* ${occasion}\n`;
+    message += `*Cake Size:* ${size}\n`;
+    message += `*Delivery Date:* ${formattedDate}\n`;
+    if (notes) {
+      message += `*Design Notes:* ${notes}\n`;
+    }
+    
+    const waUrl = `https://wa.me/923359244499?text=${encodeURIComponent(message)}`;
+    
+    const waSubmit = e.target;
+    const oldText = waSubmit.textContent;
+    waSubmit.textContent = "Your order submitted ✓";
+    waSubmit.style.background = "#25D366";
+    waSubmit.style.color = "#fff";
+    waSubmit.style.boxShadow = "0 4px 0 #1a9e4a";
+    
+    window.open(waUrl, '_blank');
+    alert("Your order is submitted! We are redirecting you to WhatsApp to complete ✦");
+    
+    setTimeout(() => {
+      waSubmit.textContent = oldText;
+      waSubmit.style.background = "";
+      waSubmit.style.color = "";
+      waSubmit.style.boxShadow = "";
+    }, 5000);
+  }
 });
 
-// ============================================================ LIGHTBOX FEATURE
+/* ============================================================ LIGHTBOX with AMAZON-STYLE ZOOM */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxVideo = document.getElementById('lightbox-video');
+const zoomLens = document.getElementById('zoomLens');
+
+let isZooming = false;
+
 function openLightbox(src, type) {
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lightbox-img');
-    const lbVid = document.getElementById('lightbox-video');
+  lightbox.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  
+  if (type === 'image') {
+    lightboxImg.src = src;
+    lightboxImg.style.display = 'block';
+    lightboxVideo.style.display = 'none';
+    lightboxVideo.pause();
     
-    lb.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // prevent scrolling behind lightbox
+    // Setup zoom on image load
+    lightboxImg.onload = () => {
+      setupZoom(lightboxImg, src);
+    };
+  } else if (type === 'video') {
+    lightboxVideo.src = src;
+    lightboxVideo.style.display = 'block';
+    lightboxImg.style.display = 'none';
+    zoomLens.style.display = 'none';
+    lightboxVideo.play();
+  }
+}
+
+function setupZoom(img, src) {
+  const zoomFactor = 2.5;
+  
+  img.addEventListener('mousemove', function(e) {
+    const rect = img.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     
-    if (type === 'image') {
-        lbImg.src = src;
-        lbImg.style.display = 'block';
-        lbVid.style.display = 'none';
-        lbVid.pause();
-    } else if (type === 'video') {
-        lbVid.src = src;
-        lbVid.style.display = 'block';
-        lbImg.style.display = 'none';
-        lbVid.play();
-    }
+    // Position zoom lens
+    zoomLens.style.display = 'block';
+    zoomLens.style.left = (e.clientX - 75) + 'px';
+    zoomLens.style.top = (e.clientY - 75) + 'px';
+    
+    // Calculate background position
+    const bgX = (x / rect.width) * 100;
+    const bgY = (y / rect.height) * 100;
+    
+    zoomLens.style.backgroundImage = `url('${src}')`;
+    zoomLens.style.backgroundSize = `${rect.width * zoomFactor}px ${rect.height * zoomFactor}px`;
+    zoomLens.style.backgroundPosition = `${bgX}% ${bgY}%`;
+  });
+  
+  img.addEventListener('mouseleave', () => {
+    zoomLens.style.display = 'none';
+  });
+  
+  img.addEventListener('mouseenter', () => {
+    img.style.cursor = 'crosshair';
+  });
 }
 
 function closeLightbox() {
-    const lb = document.getElementById('lightbox');
-    const lbVid = document.getElementById('lightbox-video');
-    
-    lb.style.display = 'none';
-    document.body.style.overflow = '';
-    
-    lbVid.pause();
-    lbVid.src = '';
-    document.getElementById('lightbox-img').src = '';
+  lightbox.style.display = 'none';
+  document.body.style.overflow = '';
+  lightboxVideo.pause();
+  lightboxVideo.src = '';
+  lightboxImg.src = '';
+  zoomLens.style.display = 'none';
+  
+  // Remove zoom event listeners by cloning
+  const newImg = lightboxImg.cloneNode(true);
+  lightboxImg.parentNode.replaceChild(newImg, lightboxImg);
+  // Re-assign reference — we use getElementById
 }
 
-// ============================================================ MOBILE MENU
+/* ============================================================ MOBILE MENU */
 document.addEventListener('DOMContentLoaded', () => {
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const navLinks = document.getElementById('navLinks');
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const navLinksEl = document.getElementById('navLinks');
+  
+  if (mobileBtn && navLinksEl) {
+    mobileBtn.addEventListener('click', () => {
+      navLinksEl.classList.toggle('active');
+      const icon = mobileBtn.querySelector('i');
+      if (navLinksEl.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
     
-    if (mobileBtn && navLinks) {
-        mobileBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            const icon = mobileBtn.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-        
-        // Close menu when clicking a link
-        const links = navLinks.querySelectorAll('a');
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                const icon = mobileBtn.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            });
-        });
-    }
+    const links = navLinksEl.querySelectorAll('a');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinksEl.classList.remove('active');
+        const icon = mobileBtn.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      });
+    });
+  }
+});
+
+/* ============================================================ TEXT MORPH — apply to specific hover elements */
+document.querySelectorAll('.section-title, .hero-title, .team-banner-title').forEach(el => {
+  el.style.transition = 'letter-spacing 0.5s cubic-bezier(.4,0,.2,1)';
+  el.addEventListener('mouseenter', () => {
+    el.style.letterSpacing = '0.02em';
+  });
+  el.addEventListener('mouseleave', () => {
+    el.style.letterSpacing = '';
+  });
 });
