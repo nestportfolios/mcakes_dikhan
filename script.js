@@ -340,7 +340,7 @@ document.addEventListener('click', (e) => {
 
 /* ============================================================ LIGHTBOX with AMAZON-STYLE ZOOM */
 const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightbox-img');
+let lightboxImg = document.getElementById('lightbox-img');
 const lightboxVideo = document.getElementById('lightbox-video');
 const zoomLens = document.getElementById('zoomLens');
 
@@ -412,6 +412,7 @@ function closeLightbox() {
   const newImg = lightboxImg.cloneNode(true);
   lightboxImg.parentNode.replaceChild(newImg, lightboxImg);
   // Re-assign reference — we use getElementById
+  lightboxImg = newImg;
 }
 
 /* ============================================================ MOBILE MENU */
